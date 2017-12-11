@@ -1,0 +1,15 @@
+.logo {
+  margin-top: 5px;
+  align-items: center;
+  display: flex;
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+}
+
+.logo span {
+  font-size: 24px;
+  margin-left: 15px;
+}

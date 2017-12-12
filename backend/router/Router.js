@@ -1,6 +1,6 @@
 const User = require('../controllers/User');
 module.exports = app => {
-
     //user
-    app.get('/register', User.register);
+    app.post('/register', User.register);
+    app.post('/login', User.login);
 };

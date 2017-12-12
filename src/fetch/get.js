@@ -12,8 +12,9 @@ export function get(url, params, cb) {
         message.error(err.toString());
     })
         .then(data => {
-                cb(data);
-                console.log();
+                if (cb){
+                    cb(data);
+                }
             }
         ).catch(
         err => {

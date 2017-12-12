@@ -3,6 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {Link} from 'react-router'
 import {Row, Col, Menu, Icon, Avatar} from 'antd';
 // import SearchInput from '../SearchInput/SearchInput'
+import LoginAndRegisterModal from '../LoginAndRegisterModal/LoginAndRegisterModal'
 import './style.css'
 
 const SubMenu = Menu.SubMenu;
@@ -16,10 +17,12 @@ export default class Header extends React.Component {
 
         // 初始状态
         this.state = {
+            modalVisible: false,
             browseWidth: 1080,
             current: 'home',
             user: '请登录',
-            color: '#1890ff'
+            color: '#1890ff',
+            isLogin: false,
         };
     }
 
@@ -43,17 +46,30 @@ export default class Header extends React.Component {
     }
 
 
+    //切换菜单栏
     handleClick = (e) => {
-        console.log('click ', e);
-        if (e.key!=='register'&&e.key!=='login'&&e.key!=='collection'){
+        if (e.key !== 'loginOrRegister' && e.key !== 'collection') {
             this.setState({
                 current: e.key,
             });
         }
+        //打开弹窗
+        if (e.key === 'loginOrRegister') {
+            this.setState({
+                modalVisible: true,
+            })
+        }
     };
 
+    //关闭登陆弹窗回调
+    closeModalCB() {
+        this.setState({
+            modalVisible: false
+        })
+    }
+
     render() {
-        let {browseWidth} = this.state;
+        let {browseWidth, modalVisible, isLogin} = this.state;
         return (
             <Row>
                 <Col span={2}/>
@@ -79,19 +95,25 @@ export default class Header extends React.Component {
                 </Col>
                 <Col span={1}>
                     <Menu mode="horizontal" onClick={this.handleClick}>
-                        <SubMenu title={<Avatar style={{backgroundColor: this.state.color, verticalAlign: 'middle'}}
-                                                size="large">
-                            {this.state.user}
-                        </Avatar>}>
-                            <MenuItemGroup>
-                                <Menu.Item key="login">登陆</Menu.Item>
-                                <Menu.Item key="register">注册</Menu.Item>
-                                <Menu.Item key="collection">我的收藏</Menu.Item>
-                            </MenuItemGroup>
-                        </SubMenu>
+                        {isLogin ?
+                            <SubMenu title={<Avatar style={{backgroundColor: this.state.color, verticalAlign: 'middle'}}
+                                                    size="large">
+                                {this.state.user}
+                            </Avatar>}>
+                                <MenuItemGroup>
+                                    <Menu.Item key="collection">我的收藏</Menu.Item>
+                                </MenuItemGroup>
+                            </SubMenu> : <Menu.Item key="loginOrRegister">
+                                <Avatar style={{backgroundColor: this.state.color, verticalAlign: 'middle'}}
+                                        size="large">
+                                    {this.state.user}
+                                </Avatar>
+                            </Menu.Item>}
+
                     </Menu>
                 </Col>
                 <Col span={2}/>
+                <LoginAndRegisterModal visible={modalVisible} closeModalCB={this.closeModalCB.bind(this)}/>
             </Row>
         )
     }

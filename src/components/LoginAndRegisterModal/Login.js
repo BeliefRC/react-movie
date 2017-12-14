@@ -5,9 +5,7 @@ import {
     Form,
     Input,
     Button,
-    message
 } from 'antd'
-import {post} from '../../fetch/post'
 
 const FormItem = Form.Item;
 
@@ -33,17 +31,10 @@ class Login extends React.Component {
     //登录
     handleLoginSubmit = (e) => {
         e.preventDefault();
+        let _this = this;
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                post('/login', values, (data) => {
-                    if (data.success) {
-                        message.success(data.msg);
-                        this.props.closeModal();
-                    } else {
-                        message.error(data.msg);
-                    }
-                })
+                _this.props.handleLogin(values);
             }
         });
     };
@@ -59,7 +50,7 @@ class Login extends React.Component {
                     validateStatus={userNameError ? 'error' : ''}
                     help={userNameError || ''}
                 >
-                    {getFieldDecorator('userName', {
+                    {getFieldDecorator('username', {
                         rules: [{required: true, message: 'Please input your username!'}],
                     })(
                         <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}

@@ -51,15 +51,7 @@ class Register extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                post('/register', values, (data) => {
-                    if (data.success) {
-                        message.success(data.msg);
-                        this.props.closeModal();
-                    } else {
-                        message.error(data.msg);
-                    }
-                })
+                this.props.handleRegister(values);
             }
         });
     };

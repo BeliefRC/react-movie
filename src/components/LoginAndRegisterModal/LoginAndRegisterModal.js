@@ -50,7 +50,7 @@ export default class LoginAndRegisterModal extends React.Component {
 
     render() {
         let {defaultActiveKey} = this.state;
-
+        let {handleLogin,handleRegister} = this.props;
 
         return (
             <Modal
@@ -60,10 +60,10 @@ export default class LoginAndRegisterModal extends React.Component {
             >
                 <Tabs defaultActiveKey={defaultActiveKey}>
                     <TabPane tab={<span><Icon type="login"/>登录</span>} key="login">
-                        <Login closeModal={this.closeModal.bind(this)} />
+                        <Login closeModal={this.closeModal.bind(this)} handleLogin={handleLogin.bind(this)}/>
                     </TabPane>
                     <TabPane tab={<span><Icon type="key"/>注册</span>} key="register">
-                        <Register closeModal={this.closeModal.bind(this)}/>
+                        <Register closeModal={this.closeModal.bind(this)} handleRegister={handleRegister.bind(this)}/>
                     </TabPane>
                 </Tabs>
             </Modal>

@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 //session依赖于cookie
 app.use(cookieParser());
 app.use(session({
-    secret: 'rc',
+    secret: 'reactMovie',
     store: new mongoStore({
         url: dbUrl,
         collection: 'sessions',

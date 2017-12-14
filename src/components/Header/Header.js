@@ -5,6 +5,8 @@ import {Row, Col, Menu, Icon, Avatar} from 'antd';
 // import SearchInput from '../SearchInput/SearchInput'
 import LoginAndRegisterModal from '../LoginAndRegisterModal/LoginAndRegisterModal'
 import './style.css'
+import {post} from "../../fetch/post";
+import {message} from "antd/lib/index";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -42,13 +44,14 @@ export default class Header extends React.Component {
                 clearTimeout(timeoutId)
             }
             timeoutId = setTimeout(callback, 100)
-        }, false)
+        }, false);
+        this.doChecking();
     }
 
 
     //切换菜单栏
     handleClick = (e) => {
-        if (e.key !== 'loginOrRegister' && e.key !== 'collection') {
+        if (e.key !== 'loginOrRegister' && e.key !== 'collection' && e.key !== 'logout') {
             this.setState({
                 current: e.key,
             });
@@ -59,6 +62,9 @@ export default class Header extends React.Component {
                 modalVisible: true,
             })
         }
+        if (e.key === 'logout') {
+            this.handleLogout();
+        }
     };
 
     //关闭登陆弹窗回调
@@ -66,6 +72,50 @@ export default class Header extends React.Component {
         this.setState({
             modalVisible: false
         })
+    }
+
+    handleLogin(values) {
+        post('/login', values, (data) => {
+            if (data.success) {
+                message.success(data.msg);
+                this.setState({
+                    modalVisible: false,
+                    isLogin: true,
+                    user: values.username
+                });
+                sessionStorage.username = values.username
+            } else {
+                message.error(data.msg);
+            }
+        })
+    }
+
+    handleRegister(values) {
+        post('/register', values, (data) => {
+            if (data.success) {
+                message.success(data.msg);
+                this.handleLogin(values);
+            } else {
+                message.error(data.msg);
+            }
+        })
+    }
+
+    handleLogout() {
+        sessionStorage.username = '';
+        this.setState({
+            isLogin: false,
+            use: '请登录'
+        })
+    }
+
+    doChecking() {
+        if (sessionStorage.username) {
+            this.setState({
+                isLogin: true,
+                user: sessionStorage.username
+            });
+        }
     }
 
     render() {
@@ -102,6 +152,7 @@ export default class Header extends React.Component {
                             </Avatar>}>
                                 <MenuItemGroup>
                                     <Menu.Item key="collection">我的收藏</Menu.Item>
+                                    <Menu.Item key="logout">退出登录</Menu.Item>
                                 </MenuItemGroup>
                             </SubMenu> : <Menu.Item key="loginOrRegister">
                                 <Avatar style={{backgroundColor: this.state.color, verticalAlign: 'middle'}}
@@ -113,7 +164,9 @@ export default class Header extends React.Component {
                     </Menu>
                 </Col>
                 <Col span={2}/>
-                <LoginAndRegisterModal visible={modalVisible} closeModalCB={this.closeModalCB.bind(this)}/>
+                <LoginAndRegisterModal visible={modalVisible} closeModalCB={this.closeModalCB.bind(this)}
+                                       handleLogin={this.handleLogin.bind(this)}
+                                       handleRegister={this.handleRegister.bind(this)}/>
             </Row>
         )
     }

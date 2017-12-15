@@ -3,8 +3,6 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {
     Form, Input, Tooltip, Icon, Cascader, Select, Button, AutoComplete
 } from 'antd'
-import {post} from '../../fetch/post'
-import {message} from "antd/lib/index";
 
 const FormItem = Form.Item;
 const Option = Select.Option;

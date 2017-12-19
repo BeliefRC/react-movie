@@ -27,6 +27,7 @@ export default class Header extends React.Component {
     }
 
     componentDidMount() {
+        this.setCurrentMenuKey();
         let timeoutId, _this = this;
 
         function callback() {
@@ -44,6 +45,21 @@ export default class Header extends React.Component {
             timeoutId = setTimeout(callback, 100)
         }, false);
         this.doChecking();
+    }
+
+    //设置菜单选中值
+    setCurrentMenuKey(){
+       let path= hashHistory.getCurrentLocation().pathname;
+        switch (path){
+            case '/':
+                this.setState({current:'home'});
+                break;
+            case '/admin/movie':
+                this.setState({current:'admin'});
+                break;
+            default:
+                break
+        }
     }
 
 

@@ -1,9 +1,10 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {Form, Input, Button, Select} from 'antd';
+import {Form, Input, Button, Select,DatePicker , message} from 'antd';
 import {post} from "../../fetch/post";
 
 const FormItem = Form.Item;
+const dateFormat = 'YYYY/MM/DD';
 const {TextArea} = Input;
 const Option = Select.Option;
 
@@ -27,8 +28,15 @@ class EditMovieInfo extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 let movieId = this.props.movieId;
-                let pathname = movieId ? `admin/movie/update` : `admin/movie/new`;
+                let pathname = movieId ? `/admin/movie/update` : `/admin/movie/new`;
                 values.movieId = movieId;
+                post(pathname, values, (data) => {
+                    if (data.success) {
+                        message.success(data.msg)
+                    } else {
+                        message.error(data.msg)
+                    }
+                })
             }
         });
     };
@@ -135,14 +143,14 @@ class EditMovieInfo extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="年份"
+                    label="上映日期"
                 >
                     {getFieldDecorator('year', {
                         rules: [{
                             required: true, message: '请输入!',
                         }],
                     })(
-                        <Input/>
+                        <DatePicker  format={dateFormat} />
                     )}
                 </FormItem>
                 <FormItem

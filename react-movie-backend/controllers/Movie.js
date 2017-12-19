@@ -22,10 +22,9 @@ exports.movieList = (req, res) => {
 };
 
 
-exports.movieSave = (req, res) => {
+exports.saveMovie = (req, res) => {
     let _movie = req.body;
-
-    User.find({username: _user.username}, (err, user) => {
+    Movie.find({title: _movie.title}, (err, movie) => {
         if (err) {
             console.log(err);
             let data = {
@@ -33,21 +32,19 @@ exports.movieSave = (req, res) => {
                 msg: err,
                 backData: null
             };
-            res.end(JSON.stringify(data));
+            res.end(JSON.stringify(data))
         } else {
-            //查找当前用户是否存在
-            if (user.length) {
-                console.log('用户名已存在');
+            //已保存过当前电影
+            if (movie.length) {
                 let data = {
                     success: false,
-                    msg: '用户名已存在',
+                    msg: `电影《${_movie.title}》已存在`,
                     backData: null
                 };
-                res.end(JSON.stringify(data));
+                res.end(JSON.stringify(data))
             } else {
-                //保存当前用户
-                user = new User(_user);
-                user.save(err => {
+                movie = new Movie (_movie);
+                movie.save(err => {
                     if (err) {
                         console.log(err);
                         let data = {
@@ -55,17 +52,17 @@ exports.movieSave = (req, res) => {
                             msg: err,
                             backData: null
                         };
-                        res.end(JSON.stringify(data));
+                        res.end(JSON.stringify(data))
                     } else {
                         let data = {
                             success: true,
-                            msg: '注册成功',
+                            msg: `新增电影《${_movie.title}》成功`,
                             backData: null
                         };
-                        res.end(JSON.stringify(data));
+                        res.end(JSON.stringify(data))
                     }
                 })
             }
         }
-    });
+    })
 };

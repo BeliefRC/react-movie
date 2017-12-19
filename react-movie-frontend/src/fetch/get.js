@@ -12,6 +12,7 @@ export function get(url, params, cb) {
     fetch(`${domainConstants.DOMAIN}${url}`, {
         method: 'GET',
     }).then(res => res.json()).catch(err => {
+        console.err(err);
         message.error(err.toString());
     })
         .then(data => {

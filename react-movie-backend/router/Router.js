@@ -6,5 +6,6 @@ module.exports = app => {
     app.post('/login', User.login);
 
     //movie
+    app.post('/admin/movie/new', Movie.saveMovie);
     app.get('/admin/movie/list', Movie.movieList);
 };

@@ -13,6 +13,7 @@ export function post(url, params, cb) {
         method: 'POST',
         body: params
     }).then(res => res.json()).catch(err => {
+        console.err(err);
         message.error(err.toString());
     })
         .then(data => {

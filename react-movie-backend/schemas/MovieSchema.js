@@ -7,7 +7,7 @@ const MovieSchema = new mongoose.Schema({
     poster: String,
     flash: String,
     year: Date,
-    category: String,
+    category: Array,
     summary: String,
     pv: {
         type: Number,

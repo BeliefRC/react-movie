@@ -1,5 +1,27 @@
 const Movie = require('../models/Movie');
 
+exports.detail=(req, res)=>{
+    let id=req.query.movieId;
+    Movie.findById(id,(err,movie)=>{
+      if (err) {
+          console.log(err);
+          let data = {
+              success: false,
+              msg: err,
+              backData: null
+          };
+          res.end(JSON.stringify(data));
+      } else {
+          let data = {
+              success: true,
+              msg: '查看电影详情成功',
+              backData: movie
+          };
+          res.end(JSON.stringify(data));
+      }
+    })
+};
+
 exports.movieList = (req, res) => {
     Movie.fetch((err, movies) => {
         if (err) {

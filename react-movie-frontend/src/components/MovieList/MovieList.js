@@ -3,9 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment'
 import {Table, Menu, Dropdown, Icon,Popconfirm, message} from 'antd';
 import {get} from "../../fetch/get";
-import './style.css'
-
-
+import {hashHistory} from 'react-router'
 export default class MovieList extends React.Component {
     // 构造
     constructor(props) {
@@ -29,13 +27,13 @@ export default class MovieList extends React.Component {
         return <Dropdown
             overlay={<Menu onClick={this.handleOperate.bind(this,text, record, index)}>
                 <Menu.Item key='update'>
-                    <Icon type="edit" />编辑
+                    <Icon type="edit" /> 编辑
                 </Menu.Item >
                 <Menu.Item key='delete'>
                     <Popconfirm title="确定删除这条电影吗?"
                                 onConfirm={this.confirm.bind(this,text, record, index)}
                                 onCancel={this.cancel} okText="Yes" cancelText="No">
-                        <Icon type="delete" />删除
+                        <Icon type="delete" /> 删除
                     </Popconfirm>
                 </Menu.Item>
 
@@ -80,7 +78,7 @@ export default class MovieList extends React.Component {
     handleOperate(text, record, index,e){
         switch (e.key){
             case'update':
-                console.log(e.key);
+                hashHistory.push(`admin/movie/detail/${record._id}`);
                 break;
             default:
                 break;
@@ -135,7 +133,7 @@ export default class MovieList extends React.Component {
         }, {
             title: '分类',
             dataIndex: 'category',
-            width: 100,
+            width: 180,
 
         }, {
             title: '录入时间',
@@ -172,7 +170,7 @@ export default class MovieList extends React.Component {
             // pagination={this.state.pagination}
                       loading={this.state.loading}
                       onChange={this.handleTableChange}
-                      scroll={{x: 1620, y: 600}}
+                      scroll={{x: 1700, y: 600}}
                       className='movie-table-list'
         />
     }

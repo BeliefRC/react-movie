@@ -1,0 +1,12 @@
+.tool-bar-back{
+    display: flex;
+    justify-content:flex-start;
+    border-bottom: #e5e8ed solid 1px;
+}
+.back{
+    width:70px;
+    height: 60px;
+    line-height: 60px;
+    font-weight: bold;
+    font-size: 20px;
+}

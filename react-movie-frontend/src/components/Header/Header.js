@@ -19,7 +19,6 @@ export default class Header extends React.Component {
         this.state = {
             modalVisible: false,
             browseWidth: 1080,
-            current: 'home',
             user: '请登录',
             color: '#1890ff',
             isLogin: false,
@@ -50,16 +49,11 @@ export default class Header extends React.Component {
     //设置菜单选中值
     setCurrentMenuKey(){
        let path= hashHistory.getCurrentLocation().pathname;
-        switch (path){
-            case '/':
-                this.setState({current:'home'});
-                break;
-            case '/admin/movie':
-                this.setState({current:'admin'});
-                break;
-            default:
-                break
-        }
+       if (path==='/'){
+           this.setState({current:'home'});
+       }else if(path.indexOf('/admin/movie')>-1){
+           this.setState({current:'admin'});
+       }
     }
 
 

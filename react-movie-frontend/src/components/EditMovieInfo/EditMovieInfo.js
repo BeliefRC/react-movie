@@ -1,7 +1,9 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {Form, Input, Button, Select,DatePicker , message} from 'antd';
+import {Form, Input, Button, Select,DatePicker , message,Spin} from 'antd';
+import {hashHistory} from 'react-router'
 import {post} from "../../fetch/post";
+import {get} from "../../fetch/get";
 
 const FormItem = Form.Item;
 const dateFormat = 'YYYY/MM/DD';
@@ -20,7 +22,43 @@ class EditMovieInfo extends React.Component {
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
         // 初始状态
-        this.state = {};
+        this.state = {
+            loading:false
+        };
+    }
+
+    componentDidMount() {
+        let movieId=this.props.movieId;
+        if (movieId){
+             this.ajaxGetMovieDetail(movieId)
+        }
+    }
+
+    //获取电影数据
+    ajaxGetMovieDetail(movieId){
+        this.setState({
+            loading:true
+        });
+        get('/movie/detail',{movieId},(data)=>{
+            if (data.success) {
+                data.backData.year=new Date();
+                //后台返回的字段进行过滤匹配
+                let value = this.props.form.getFieldsValue();
+                for (let key in value){
+                    if (value.hasOwnProperty(key)){
+                         value[key]=data.backData[key]
+                    }
+                }
+                //分割分类
+                value.category=value.category.split(',');
+                this.props.form.setFieldsValue(value)
+            } else {
+                message.error(data.msg)
+            }
+            this.setState({
+                loading:false
+            });
+        })
     }
 
     handleSubmit = (e) => {
@@ -32,7 +70,8 @@ class EditMovieInfo extends React.Component {
                 values.movieId = movieId;
                 post(pathname, values, (data) => {
                     if (data.success) {
-                        message.success(data.msg)
+                        message.success(data.msg);
+                        hashHistory.push('admin/movie')
                     } else {
                         message.error(data.msg)
                     }
@@ -68,6 +107,7 @@ class EditMovieInfo extends React.Component {
         };
 
         return (
+            <Spin  spinning={this.state.loading}>
             <Form onSubmit={this.handleSubmit} style={{marginTop: '20px'}}>
                 <FormItem
                     {...formItemLayout}
@@ -141,7 +181,7 @@ class EditMovieInfo extends React.Component {
                         <Input/>
                     )}
                 </FormItem>
-                <FormItem
+               {/* <FormItem
                     {...formItemLayout}
                     label="上映日期"
                 >
@@ -152,7 +192,7 @@ class EditMovieInfo extends React.Component {
                     })(
                         <DatePicker  format={dateFormat} />
                     )}
-                </FormItem>
+                </FormItem>*/}
                 <FormItem
                     {...formItemLayout}
                     label="分类"
@@ -160,6 +200,20 @@ class EditMovieInfo extends React.Component {
                     {getFieldDecorator('category', {
                         rules: [{
                             required: false, message: '请输入!',
+                        },{
+                            validator(rule, values, callback) {
+                                if (values && values.length > 0) {
+                                    if (values.some(value=>value.indexOf(',')>-1)) {
+                                        callback(`分类不允许含有,`);
+                                    } else if(values.length>4){
+                                        callback(`最多含四个分类`);
+                                    }else {
+                                        callback();
+                                    }
+                                } else {
+                                    callback();
+                                }
+                            }
                         }],
                     })(
                         <Select
@@ -185,9 +239,10 @@ class EditMovieInfo extends React.Component {
                 </FormItem>
 
                 <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">录入</Button>
+                    <Button type="primary" htmlType="submit">{this.props.movieId?'更新':'录入'}</Button>
                 </FormItem>
             </Form>
+            </Spin>
         )
     }
 }

@@ -4,7 +4,7 @@ import {Row,Col,Button,Icon} from 'antd'
 import {hashHistory} from 'react-router'
 import './style.css'
 
-export default  class ToolBar  extends React.Component {
+export default  class ToolBarBack  extends React.Component {
     // 构造
     constructor(props,context) {
         super(props,context);
@@ -16,16 +16,14 @@ export default  class ToolBar  extends React.Component {
     
     handleClick(){
         console.log(1);
-        hashHistory.push('./admin/movie/detail')
+        hashHistory.push('admin/movie/detail')
     }
 
     render() {
-        return (
-            <Row>
-                <Col span={24} className='tool-bar'>
-                    <Button type='primary'><Icon type="plus" onClick={this.handleClick.bind(this)}/>新增</Button>
-                </Col>
-            </Row>
-        )
+        return <Row>
+            <Col span={24} className='tool-bar-back'>
+                <div className='back'><Icon type="left" /></div>
+            </Col>
+        </Row>
     }
 }

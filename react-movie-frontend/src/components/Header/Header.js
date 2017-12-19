@@ -1,15 +1,13 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {Link} from 'react-router'
-import {Row, Col, Menu, Icon, Avatar} from 'antd';
+import {Link, hashHistory} from 'react-router'
+import {Row, Col, Menu, Icon, Avatar, Dropdown} from 'antd';
 // import SearchInput from '../SearchInput/SearchInput'
 import LoginAndRegisterModal from '../LoginAndRegisterModal/LoginAndRegisterModal'
 import './style.css'
 import {post} from "../../fetch/post";
 import {message} from "antd/lib/index";
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 export default class Header extends React.Component {
     // 构造
@@ -51,21 +49,56 @@ export default class Header extends React.Component {
 
     //切换菜单栏
     handleClick = (e) => {
-        if (e.key !== 'loginOrRegister' && e.key !== 'collection' && e.key !== 'logout') {
+        if (e.key !== 'collection' && e.key !== 'logout') {
             this.setState({
                 current: e.key,
             });
         }
-        //打开弹窗
-        if (e.key === 'loginOrRegister') {
-            this.setState({
-                modalVisible: true,
-            })
-        }
-        if (e.key === 'logout') {
-            this.handleLogout();
+        let {isLogin} = this.state;
+        switch (e.key) {
+
+            case 'logout':
+                if (isLogin) {
+                    this.handleLogout();
+                } else {
+                    message.info('请先登录');
+                    this.showModal();
+                }
+                break;
+            case 'collection':
+                if (isLogin) {
+                } else {
+                    message.info('请先登录');
+                    this.showModal();
+                }
+                break;
+            case'home': {
+                let pathname = '/';
+                if (hashHistory.getCurrentLocation().pathname !== pathname) {
+                    hashHistory.push(pathname);
+                }
+            }
+
+                break;
+            case'admin': {
+                let pathname = '/admin/movie';
+                if (hashHistory.getCurrentLocation().pathname !== pathname) {
+                    hashHistory.push(pathname);
+                }
+            }
+                break;
+            default:
+                break;
         }
     };
+
+    showModal() {
+        let {isLogin} = this.state;
+        if (isLogin) return;
+        this.setState({
+            modalVisible: true,
+        })
+    }
 
     //关闭登陆弹窗回调
     closeModalCB() {
@@ -105,8 +138,9 @@ export default class Header extends React.Component {
         sessionStorage.username = '';
         this.setState({
             isLogin: false,
-            use: '请登录'
-        })
+            user: '请登录'
+        });
+        message.info('退出登录成功')
     }
 
     doChecking() {
@@ -119,7 +153,11 @@ export default class Header extends React.Component {
     }
 
     render() {
-        let {browseWidth, modalVisible, isLogin} = this.state;
+        let {browseWidth, modalVisible} = this.state;
+        const userMenu = <Menu onClick={this.handleClick}>
+            <Menu.Item key="collection">我的收藏</Menu.Item>
+            <Menu.Item key="logout">退出登录</Menu.Item>
+        </Menu>;
         return (
             <Row>
                 <Col span={2}/>
@@ -138,30 +176,26 @@ export default class Header extends React.Component {
                         <Menu.Item key="home">
                             <Icon type="home"/>首页推荐
                         </Menu.Item>
-                        <Menu.Item key="app">
+                        <Menu.Item key="category">
                             <Icon type="tags-o"/>电影分类
+                        </Menu.Item>
+                        <Menu.Item key="admin">
+                            <Icon type="exception"/>电影管理
                         </Menu.Item>
                     </Menu>
                 </Col>
-                <Col span={1}>
-                    <Menu mode="horizontal" onClick={this.handleClick}>
-                        {isLogin ?
-                            <SubMenu title={<Avatar style={{backgroundColor: this.state.color, verticalAlign: 'middle'}}
-                                                    size="large">
-                                {this.state.user}
-                            </Avatar>}>
-                                <MenuItemGroup>
-                                    <Menu.Item key="collection">我的收藏</Menu.Item>
-                                    <Menu.Item key="logout">退出登录</Menu.Item>
-                                </MenuItemGroup>
-                            </SubMenu> : <Menu.Item key="loginOrRegister">
-                                <Avatar style={{backgroundColor: this.state.color, verticalAlign: 'middle'}}
-                                        size="large">
-                                    {this.state.user}
-                                </Avatar>
-                            </Menu.Item>}
-
-                    </Menu>
+                <Col span={1} style={{height: 48, overflow: 'hidden'}}>
+                    <Dropdown overlay={userMenu} onClick={this.showModal.bind(this)}>
+                        <Avatar style={{
+                            backgroundColor: this.state.color,
+                            verticalAlign: 'middle',
+                            cursor: 'pointer',
+                            marginTop: '4px'
+                        }}
+                                size="large">
+                            {this.state.user}
+                        </Avatar>
+                    </Dropdown>
                 </Col>
                 <Col span={2}/>
                 <LoginAndRegisterModal visible={modalVisible} closeModalCB={this.closeModalCB.bind(this)}

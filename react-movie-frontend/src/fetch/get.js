@@ -6,6 +6,9 @@ export function get(url, params, cb) {
     //拼接参数
     Object.keys(params).forEach(key => paramsArray.push(`${key}=${params[key]}`));
     url += url.search(/\?/) === -1 ? `?${paramsArray.join('&')}` : url += `&${paramsArray.join('&')}`;
+    if (url.endsWith('?')){
+        url = url.substring(0, url.lastIndexOf('?'));
+    }
     fetch(`${domainConstants.DOMAIN}${url}`, {
         method: 'GET',
     }).then(res => res.json()).catch(err => {

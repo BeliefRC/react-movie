@@ -1,8 +1,6 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import 'antd/dist/antd.css'
 import Header from '../components/Header/Header'
-
 
 export default class App extends React.Component {
     // 构造

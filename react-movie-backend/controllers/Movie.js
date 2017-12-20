@@ -7,7 +7,7 @@ exports.detail=(req, res)=>{
           console.log(err);
           let data = {
               success: false,
-              msg: err,
+              msg: err.toString(),
               backData: null
           };
           res.end(JSON.stringify(data));
@@ -28,7 +28,7 @@ exports.movieList = (req, res) => {
             console.log(err);
             let data = {
                 success: false,
-                msg: err,
+                msg: err.toString(),
                 backData: null
             };
             res.end(JSON.stringify(data));
@@ -51,7 +51,7 @@ exports.saveMovie = (req, res) => {
             console.log(err);
             let data = {
                 success: false,
-                msg: err,
+                msg: err.toString(),
                 backData: null
             };
             res.end(JSON.stringify(data))
@@ -71,7 +71,7 @@ exports.saveMovie = (req, res) => {
                         console.log(err);
                         let data = {
                             success: false,
-                            msg: err,
+                            msg: err.toString(),
                             backData: null
                         };
                         res.end(JSON.stringify(data))
@@ -87,4 +87,73 @@ exports.saveMovie = (req, res) => {
             }
         }
     })
+};
+
+exports.updateMovie=(req,res)=>{
+    let _movie=req.body;
+    if (_movie._id){
+         Movie.findById(_movie._id,(err,movie)=>{
+             if (err) {
+                 console.log(err);
+                 let data = {
+                     success: false,
+                     msg: err.toString(),
+                     backData: null
+                 };
+                 res.end(JSON.stringify(data))
+             } else {
+                 Object.assign(movie,_movie);
+                 movie.save((err,movie)=>{
+                    if (err) {
+                        console.log(err);
+                        let data = {
+                            success: false,
+                            msg: err.toString(),
+                            backData: null
+                        };
+                        res.end(JSON.stringify(data))
+                    } else {
+                        let data = {
+                            success: true,
+                            msg: `更新电影《${_movie.title}》成功`,
+                            backData: null
+                        };
+                        res.end(JSON.stringify(data))
+                    }
+                })
+             }
+         })
+    }else {
+        let data = {
+            success: false,
+            msg: 'id不存在，请勿随意修改页面url',
+            backData: null
+        };
+        res.end(JSON.stringify(data))
+
+    }};
+
+//删除电影
+exports.deleteMovie=(req,res)=>{
+    let _id=req.query._id;
+    if (_id){
+         Movie.remove({_id},(err,movie)=>{
+             if (err) {
+                 console.log(err);
+                 let data = {
+                     success: false,
+                     msg: err.toString(),
+                     backData: null
+                 };
+                 res.end(JSON.stringify(data))
+             } else {
+                 let data = {
+                     success: true,
+                     msg: `删除电影《${movie.title}》成功`,
+                     backData: null
+                 };
+                 res.end(JSON.stringify(data))
+             }
+         })
+    }
 };

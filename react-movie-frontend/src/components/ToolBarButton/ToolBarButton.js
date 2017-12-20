@@ -15,7 +15,6 @@ export default  class ToolBarButton  extends React.Component {
     }
     
     handleClick(){
-        console.log(1);
         hashHistory.push('admin/movie/detail')
     }
 

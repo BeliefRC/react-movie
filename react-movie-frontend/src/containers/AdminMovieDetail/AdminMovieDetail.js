@@ -2,7 +2,7 @@ import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import EditMovieInfo from '../../components/EditMovieInfo/EditMovieInfo'
 import {Col, Row,Icon} from 'antd'
-import ToolBarBack from '../../components/ToolBarBack/ToolBarBack'
+// import ToolBarBack from '../../components/ToolBarBack/ToolBarBack'
 import './style.css'
 export default class AdminMovieDetail extends React.Component {
     // 构造
@@ -15,7 +15,6 @@ export default class AdminMovieDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.params.movieId);
     }
     render() {
         let movieId = this.props.params.movieId;

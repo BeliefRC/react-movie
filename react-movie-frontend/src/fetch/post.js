@@ -12,18 +12,18 @@ export function post(url, params, cb) {
         },
         method: 'POST',
         body: params
-    }).then(res => res.json()).catch(err => {
-        message.error(err.toString());
     })
+        .then(res => res.json())
         .then(data => {
                 if (cb) {
                     cb(data);
                 }
             }
-        ).catch(
-        err => {
-            console.error(err);
-            message.error(err.toString());
-        }
-    )
+        )
+        .catch(
+            err => {
+                console.error(err);
+                message.error(err.toString());
+            }
+        )
 }

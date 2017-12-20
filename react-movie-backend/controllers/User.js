@@ -6,7 +6,7 @@ exports.register = (req, res) => {
             console.log(err);
             let data = {
                 success: false,
-                msg: err,
+                msg: err.toString(),
                 backData: null
             };
             res.end(JSON.stringify(data));
@@ -28,7 +28,7 @@ exports.register = (req, res) => {
                         console.log(err);
                         let data = {
                             success: false,
-                            msg: err,
+                            msg: err.toString(),
                             backData: null
                         };
                         res.end(JSON.stringify(data));
@@ -55,7 +55,7 @@ exports.login = (req, res) => {
             console.log(err);
             let data = {
                 success: false,
-                msg: err,
+                msg: err.toString(),
                 backData: null
             };
             res.end(JSON.stringify(data));
@@ -76,7 +76,7 @@ exports.login = (req, res) => {
                         console.log(err);
                         let data = {
                             success: false,
-                            msg: err,
+                            msg: err.toString(),
                             backData: null
                         };
                         res.end(JSON.stringify(data));

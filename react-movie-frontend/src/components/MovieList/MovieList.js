@@ -88,6 +88,14 @@ export default class MovieList extends React.Component {
     //确定删除电影
     confirm(text, record, index,e){
         console.log(arguments);
+        get(`/admin/movie/delete`,{_id:record._id},(data)=>{
+            if (data.success){
+                message.success(data.msg);
+                this.getDataSource();
+            }else {
+                message.error(data.msg)
+            }
+        })
     }
     //取消删除电影
     cancel(){
@@ -100,7 +108,7 @@ export default class MovieList extends React.Component {
             dataIndex: 'title',
             sorter: (a,b)=>{a.title.localeCompare(b.title,'zh')},
             fixed: 'left',
-            width: 150
+            width: 250
         }, {
             title: '导演',
             dataIndex: 'director',
@@ -108,7 +116,7 @@ export default class MovieList extends React.Component {
                 {text: 'Male', value: 'male'},
                 {text: 'Female', value: 'female'},
             ],
-            width: 100,
+            width: 150,
         }, {
             title: '国家',
             dataIndex: 'country',
@@ -117,11 +125,6 @@ export default class MovieList extends React.Component {
             title: '语言',
             dataIndex: 'language',
             width: 100,
-
-        },{
-            title: 'flash地址',
-            dataIndex: 'flash',
-            width: 150,
 
         },{
             title: '上映日期',
@@ -151,10 +154,10 @@ export default class MovieList extends React.Component {
             dataIndex: 'pv',
             width: 100,
             sorter:(a,b)=>a.pv-b.pv
-        }, {
-            title: '简介',
-            dataIndex: 'summary',
-            width: 300,
+        },{
+            title: 'flash地址',
+            dataIndex: 'flash',
+            width: 400,
 
         },{
             title: '操作',
@@ -170,7 +173,7 @@ export default class MovieList extends React.Component {
             // pagination={this.state.pagination}
                       loading={this.state.loading}
                       onChange={this.handleTableChange}
-                      scroll={{x: 1700, y: 600}}
+                      scroll={{x: 1800, y: 600}}
                       className='movie-table-list'
         />
     }

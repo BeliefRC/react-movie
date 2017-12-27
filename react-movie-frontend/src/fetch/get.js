@@ -11,6 +11,7 @@ export function get(url, params, cb) {
     }
     fetch(`${domainConstants.DOMAIN}${url}`, {
         method: 'GET',
+        credentials: 'include'
     })
         .then(res => res.json())
         .then(data => {

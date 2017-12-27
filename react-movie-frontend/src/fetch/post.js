@@ -11,6 +11,7 @@ export function post(url, params, cb) {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         method: 'POST',
+        credentials: 'include',
         body: params
     })
         .then(res => res.json())

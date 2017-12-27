@@ -11,4 +11,7 @@ module.exports = app => {
     app.post('/admin/movie/new', Movie.saveMovie);
     app.post('/admin/movie/update', Movie.updateMovie);
     app.get('/admin/movie/delete', Movie.deleteMovie);
+
+    //category
+
 };

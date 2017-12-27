@@ -1,23 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
-const MovieSchema = new mongoose.Schema({
-    title: String,
-    director: String,
-    country: String,
-    language: String,
-    poster: String,
-    flash: String,
-    year: Date,
-    category: [{
-        type: ObjectId,
-        ref: 'Category'
-    }],
-    summary: String,
-    pv: {
-        type: Number,
-        default: 0
-    },
+const CategorySchema = new mongoose.Schema({
+    name: String,
+    movies: [{type: ObjectId, ref: 'Movie'}],
     meta: {
         createAt: {
             type: Date,
@@ -29,20 +15,22 @@ const MovieSchema = new mongoose.Schema({
         }
     }
 });
-MovieSchema.pre('save', function (next) {
+
+CategorySchema.pre('save', function (next) {
+    // 判断是否为新增
     if (this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now()
     } else {
         this.meta.updateAt = Date.now()
     }
-    next();
+    next()
 });
 
-MovieSchema.statics = {
+CategorySchema.statics = {
     fetch(cb) {
         return this
             .find({})
-            .sort({'meta.updateAt': -1})
+            .sort('meta.updateAt')
             .exec(cb)
     },
     findById(id, cb) {
@@ -52,4 +40,4 @@ MovieSchema.statics = {
     }
 };
 
-module.exports = MovieSchema;
+module.exports = CategorySchema;

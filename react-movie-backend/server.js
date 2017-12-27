@@ -23,11 +23,12 @@ mongoose.connect(dbUrl, {useMongoClient: true}, (err) => {
 
 //设置跨域访问
 app.all('*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By", ' 3.2.1');
     res.header("Content-Type", "application/json;charset=utf-8");
+    res.header("Access-Control-Allow-Credentials", "true");
     next();
 });
 
@@ -46,6 +47,15 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+
+let env = process.env.NODE_ENV || 'development';
+if ('development' === env) {
+    app.set('showStackError', true);
+    app.use(logger(':method :url :status'));
+    app.locals.pretty = true;
+    mongoose.set('debug', true)
+}
 
 Router(app);
 app.listen(port);

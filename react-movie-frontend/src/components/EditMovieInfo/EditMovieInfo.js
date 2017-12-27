@@ -50,8 +50,16 @@ class EditMovieInfo extends React.Component {
                     }
                 }
                 //分割分类,格式化时间
-                value.category = value.category.toString().split(',');
+                // value.category = value.category.toString().split(',');
+
+                let category = [];
+                value.category.map(item => {
+                    category.push(item.name)
+                });
+                value.category = category;
+
                 value.year = new Moment(value.year);
+                console.log(value);
                 this.props.form.setFieldsValue(value);
             } else {
                 message.error(data.msg)
@@ -66,7 +74,7 @@ class EditMovieInfo extends React.Component {
             if (!err) {
                 let movieId = this.props.movieId;
                 let pathname = movieId ? `/admin/movie/update` : `/admin/movie/new`;
-                if (movieId){
+                if (movieId) {
                     values._id = movieId;
                 }
                 this.loading();

@@ -1,7 +1,7 @@
 import {message} from 'antd';
 import * as domainConstants from './domainConstants'
 
-export function get(url, params, cb) {
+export function get(url, params, cb, errCb) {
     let paramsArray = [];
     //拼接参数
     Object.keys(params).forEach(key => paramsArray.push(`${key}=${params[key]}`));
@@ -23,6 +23,9 @@ export function get(url, params, cb) {
         err => {
             console.error(err);
             message.error(err.toString());
+            if (errCb) {
+                errCb(err)
+            }
         }
     )
 }

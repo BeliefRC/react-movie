@@ -117,8 +117,8 @@ exports.updateMovie = (req, res) => {
                 console.log(movie);
                 Object.assign(movie, _movie);
                 console.log(movie);
-                let categoryArr=movie.category.split(',');
-                delete movie.category;
+                let categoryArr=_movie.category.split(',');
+                 movie.category=undefined;
                 movie.save((err, movie) => {
                     if (err) {
                         console.log(err);

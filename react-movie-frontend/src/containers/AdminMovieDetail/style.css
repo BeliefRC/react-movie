@@ -1,0 +1,12 @@
+.back{
+    position: absolute;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 40px;
+    cursor: pointer;
+    top:10px;
+    color: #6598d2;
+}
+.back:hover{
+    color: #71BBFF;
+}

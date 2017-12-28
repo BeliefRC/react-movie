@@ -62,10 +62,11 @@ export default class MovieList extends React.Component {
                 //更改分类数据格式
                 data.backData.map(movie => {
                     let category = [];
-                    movie.category.map(item => {
+                    movie.category.map(item =>
                         category.push(item.name)
-                    });
+                    );
                     movie.category = category.toString();
+                    return true
                 });
 
                 _this.setState({

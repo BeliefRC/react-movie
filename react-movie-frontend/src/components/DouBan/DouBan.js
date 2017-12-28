@@ -31,6 +31,8 @@ class DouBan extends React.Component {
                     } else {
                         message.warn('请输入正确的id')
                     }
+                }, () => {
+                    this.props.loaded();
                 })
             }
         });

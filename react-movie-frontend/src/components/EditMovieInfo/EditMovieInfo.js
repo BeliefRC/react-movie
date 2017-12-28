@@ -50,9 +50,9 @@ class EditMovieInfo extends React.Component {
                 // value.category = value.category.toString().split(',');
 
                 let category = [];
-                value.category.map(item => {
+                value.category.map(item =>
                     category.push(item.name)
-                });
+                );
                 value.category = category;
 
                 value.year = new Moment(value.year);
@@ -73,9 +73,9 @@ class EditMovieInfo extends React.Component {
         get('/category/categoryList', {}, (data) => {
             if (data.success) {
                 console.log(data);
-                data.backData.map((category) => {
-                    children.push(<Option key={category.name}>{category.name}</Option>);
-                })
+                data.backData.map((category) =>
+                    children.push(<Option key={category.name}>{category.name}</Option>)
+                )
             } else {
                 message.error(data.msg)
             }

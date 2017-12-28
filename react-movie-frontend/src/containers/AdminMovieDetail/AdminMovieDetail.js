@@ -1,7 +1,7 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import EditMovieInfo from '../../components/EditMovieInfo/EditMovieInfo'
-import {Col, Row,Icon} from 'antd'
+import {Col, Row} from 'antd'
 // import ToolBarBack from '../../components/ToolBarBack/ToolBarBack'
 import './style.css'
 export default class AdminMovieDetail extends React.Component {

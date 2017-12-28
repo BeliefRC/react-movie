@@ -3,7 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import MovieList from '../../components/MovieList/MovieList'
 import {Col, Row} from 'antd'
 import ToolBarButton from '../../components/ToolBarButton/ToolBarButton'
-import './style.css'
+import './style.less'
 export default class AdminMovieListPage extends React.Component {
     // 构造
     constructor(props, context) {

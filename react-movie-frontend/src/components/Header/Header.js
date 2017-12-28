@@ -4,7 +4,7 @@ import {Link, hashHistory} from 'react-router'
 import {Row, Col, Menu, Icon, Avatar, Dropdown} from 'antd';
 // import SearchInput from '../SearchInput/SearchInput'
 import LoginAndRegisterModal from '../LoginAndRegisterModal/LoginAndRegisterModal'
-import './style.css'
+import './style.less'
 import {post} from "../../fetch/post";
 import {message} from "antd/lib/index";
 

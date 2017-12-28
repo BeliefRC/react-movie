@@ -12,11 +12,6 @@ const dateFormat = 'YYYY/MM/DD';
 const {TextArea} = Input;
 const Option = Select.Option;
 
-const children = [];
-for (let i = 10; i < 36; i++) {
-    children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
-
 class EditMovieInfo extends React.Component {
     // 构造
     constructor(props, context) {
@@ -25,11 +20,13 @@ class EditMovieInfo extends React.Component {
 
         // 初始状态
         this.state = {
-            loading: false
+            loading: false,
+            children: []
         };
     }
 
     componentDidMount() {
+        this.getMovieCategory();
         let movieId = this.props.movieId;
         if (movieId) {
             this.ajaxGetMovieDetail(movieId)
@@ -65,8 +62,29 @@ class EditMovieInfo extends React.Component {
                 message.error(data.msg)
             }
             this.loaded();
+        }, () => {
+            this.loaded();
         })
     }
+
+    getMovieCategory() {
+        let {children} = this.state;
+        this.loading();
+        get('/category/categoryList', {}, (data) => {
+            if (data.success) {
+                console.log(data);
+                data.backData.map((category) => {
+                    children.push(<Option key={category.name}>{category.name}</Option>);
+                })
+            } else {
+                message.error(data.msg)
+            }
+            this.loaded();
+        }, () => {
+            this.loaded();
+        })
+    }
+
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -86,6 +104,8 @@ class EditMovieInfo extends React.Component {
                     } else {
                         message.error(data.msg)
                     }
+                }, () => {
+                    this.loaded();
                 })
             }
         });
@@ -104,7 +124,7 @@ class EditMovieInfo extends React.Component {
     }
 
     render() {
-
+        const {children} = this.state;
         const {getFieldDecorator} = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -128,7 +148,6 @@ class EditMovieInfo extends React.Component {
                 },
             },
         };
-
         return (
             <Spin spinning={this.state.loading}>
                 <DouBan setFieldsValue={this.props.form.setFieldsValue} loading={this.loading.bind(this)}

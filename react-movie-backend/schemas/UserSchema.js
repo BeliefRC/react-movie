@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Promise = require('bluebird')
 const bcrypt = require('bcrypt-nodejs');
 const SALT_WORK_FACTOR = 10;
 const UserSchema = new mongoose.Schema({
@@ -60,7 +61,9 @@ UserSchema.methods = {
             if (err) {
                 console.log(err);
                 return cb(err)
+                // return err
             } else {
+                // return isMatch
                 cb(null, isMatch)
             }
         })

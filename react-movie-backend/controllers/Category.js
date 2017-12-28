@@ -1,38 +1,24 @@
 const Category = require('../models/Category');
-exports.saveCategory = (req, res) => {
+const setJson = require('../until/SetJson');
+
+exports.saveCategory = async (req, res) => {
     let _category = req.body.category;
     const category = new Category(_category);
-
-    category.save((err, category) => {
-        if (err) {
-            console.log(err);
-            let data = {
-                success: false,
-                msg: err.toString(),
-                backData: null
-            };
-            res.end(JSON.stringify(data))
-        }
-    });
+    try {
+        await category.save();
+        //分类只在电影新增，修改时会增加，不需要res
+    } catch (e) {
+        console.log(e);
+        res.json(setJson(false, e.stack, null))
+    }
 };
 
-exports.categoryList = (req, res) => {
-    Category.fetch((err, categories) => {
-        if (err) {
-            console.log(err);
-            let data = {
-                success: false,
-                msg: err.toString(),
-                backData: null
-            };
-            res.end(JSON.stringify(data))
-        } else {
-            let data = {
-                success: true,
-                msg: err.toString(),
-                backData: categories
-            };
-            res.end(JSON.stringify(data))
-        }
-    })
+exports.categoryList = async (req, res) => {
+    try {
+        let categories = await Category.fetch();
+        res.json(setJson(true, '分类列表查询成功', categories))
+    } catch (e) {
+        console.log(e);
+        res.json(setJson(false, e.stack, null))
+    }
 };

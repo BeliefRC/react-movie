@@ -1,8 +1,12 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as userInfoActionsFromOtherFile from '../actions/userInfo'
+
 import Header from '../components/Header/Header'
 
-export default class App extends React.Component {
+class App extends React.Component {
     // 构造
     constructor(props, context) {
         super(props, context);
@@ -21,3 +25,17 @@ export default class App extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        userInfoActions: bindActionCreators(userInfoActionsFromOtherFile, dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(App)

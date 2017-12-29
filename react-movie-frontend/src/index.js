@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {hashHistory} from 'react-router'
+import {Provider} from 'react-redux'
 import RouterMap from './router/RouterMap'
+import configureStore from './store/configureStore'
 
-ReactDOM.render(<RouterMap history={hashHistory}/>,
+const store = configureStore();
+ReactDOM.render(<Provider store={store}>
+        <RouterMap history={hashHistory}/>
+    </Provider>,
     document.getElementById('root'));

@@ -18,7 +18,7 @@ export default class CategortListItem extends React.Component {
     render() {
         let {movie} = this.props;
         return (
-            <Link to='/'>
+            <Link to={`/movie/${movie._id}`}>
                 <Card className='movie-card'
                       loading={!movie}
                       hoverable

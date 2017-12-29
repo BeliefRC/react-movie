@@ -5,6 +5,7 @@ import Home from '../containers/Home/Home'
 import AdminMovieListPage from '../containers/AdminMovieListPage/AdminMovieListPage'
 import AdminMovieDetail from '../containers/AdminMovieDetail/AdminMovieDetail'
 import CategoryPage from '../containers/CategoryPage/CategoryPage'
+import MovieDetailPage from '../containers/MovieDetailPage/MovieDetailPage'
 import NotFound from '../containers/404'
 
 export default class RouterMap extends React.Component {
@@ -18,6 +19,9 @@ export default class RouterMap extends React.Component {
                 </Route>
                 <Route path='category'>
                     <IndexRoute component={CategoryPage}/>
+                </Route>
+                <Route path='movie(/:movieId)'>
+                    <IndexRoute component={MovieDetailPage}/>
                 </Route>
                 <Route path='*' component={NotFound}/>
             </Route>

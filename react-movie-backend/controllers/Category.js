@@ -28,6 +28,7 @@ exports.categoryAndMovieList = async (req, res) => {
             .find({})
             .populate({
                 path: 'movies',
+                select: 'poster title director'
             });
         res.json(setJson(true, '按分类查找电影成功', categories))
     } catch (e) {

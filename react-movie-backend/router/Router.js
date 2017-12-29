@@ -15,5 +15,6 @@ module.exports = app => {
 
     //category
     app.get('/category/categoryList', Category.categoryList);
+    app.get('/category/categoryAndMovieList', Category.categoryAndMovieList);
 
 };

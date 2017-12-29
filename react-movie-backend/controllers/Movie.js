@@ -21,6 +21,7 @@ exports.detail = async (req, res) => {
 exports.movieList = async (req, res) => {
     try {
         let movie = await Movie.find({})
+            .sort({'meta.updateAt': -1})
             .populate({
                 path: 'category',
                 select: 'name'

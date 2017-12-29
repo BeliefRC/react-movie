@@ -22,3 +22,16 @@ exports.categoryList = async (req, res) => {
         res.json(setJson(false, e.stack, null))
     }
 };
+exports.categoryAndMovieList = async (req, res) => {
+    try {
+        let categories = await Category
+            .find({})
+            .populate({
+                path: 'movies',
+            });
+        res.json(setJson(true, '按分类查找电影成功', categories))
+    } catch (e) {
+        console.log(e);
+        res.json(setJson(false, e.stack, null))
+    }
+};

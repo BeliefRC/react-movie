@@ -47,13 +47,15 @@ export default class Header extends React.Component {
     }
 
     //设置菜单选中值
-    setCurrentMenuKey(){
-       let path= hashHistory.getCurrentLocation().pathname;
-       if (path==='/'){
-           this.setState({current:'home'});
-       }else if(path.indexOf('/admin/movie')>-1){
-           this.setState({current:'admin'});
-       }
+    setCurrentMenuKey() {
+        let path = hashHistory.getCurrentLocation().pathname;
+        if (path === '/') {
+            this.setState({current: 'home'});
+        } else if (path.indexOf('/admin/movie') > -1) {
+            this.setState({current: 'admin'});
+        } else if (path.indexOf('/category') > -1) {
+            this.setState({current: 'category'});
+        }
     }
 
 
@@ -88,7 +90,13 @@ export default class Header extends React.Component {
                     hashHistory.push(pathname);
                 }
             }
-
+                break;
+            case'category': {
+                let pathname = '/category';
+                if (hashHistory.getCurrentLocation().pathname !== pathname) {
+                    hashHistory.push(pathname);
+                }
+            }
                 break;
             case'admin': {
                 let pathname = '/admin/movie';
